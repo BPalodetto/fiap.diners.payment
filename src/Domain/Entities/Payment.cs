@@ -7,19 +7,36 @@ namespace Domain.Entities.PaymentAggregate;
 
 public class Payment : IAggregateRoot
 {
-	public int Id { get; init; }
-	private PaymentStatus _status;
-	public required PaymentStatus Status 
-	{
-		get => _status;
-		set 
-		{
-			UnableToChangePaymentStatusException.ThrowIfUnableToChangeStatus(_status);
-			_status = value;
-		} 
-	}
-	public required PaymentMethod PaymentMethod { get; init; }	
-	public required int OrderId { get; init; }
-	public required string ExternalId { get; init; }
-	public required decimal Amount { get; init; }
+    public Payment()
+    {
+        Status = PaymentStatus.Creating;
+        CreatedAt = DateTime.Now;
+    }
+    public string Id { get; init; }
+    private PaymentStatus _status;
+    public PaymentStatus Status
+    {
+        get => _status;
+        private set
+        {
+            UnableToChangePaymentStatusException.ThrowIfUnableToChangeStatus(_status);
+            _status = value;
+        }
+    }
+    public required PaymentMethod PaymentMethod { get; init; }
+    public required int ExternalId { get; init; }
+    private string? _providerPaymentId;
+    public string? ProviderPaymentId
+    {
+        get => _providerPaymentId;
+        set
+        {
+            UnableToChangePaymentProiderIdException.ThrowIfUnableToChangeStatus(Status);
+            _providerPaymentId = value;
+            Status = PaymentStatus.Pending;
+        }
+    }
+    public required decimal Amount { get; init; }
+    public Photo? Image { get; set; }
+    public DateTime? CreatedAt { get; init; }
 }
