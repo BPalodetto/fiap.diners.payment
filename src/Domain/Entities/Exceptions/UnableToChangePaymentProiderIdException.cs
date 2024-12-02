@@ -14,9 +14,9 @@ public class UnableToChangePaymentProiderIdException : DomainException
 		
 	}
 
-	public static void ThrowIfUnableToChangeStatus(PaymentStatus paymentStatus)
+	public static void ThrowIfUnableToChangeStatus(PaymentStatus paymentStatus, PaymentStatus PaymentStatusAtualExpectd)
 	{
-		if(paymentStatus != PaymentStatus.Creating)
+		if(paymentStatus != PaymentStatusAtualExpectd)
 		{
 			throw new UnableToChangePaymentProiderIdException(paymentStatus);
 		}

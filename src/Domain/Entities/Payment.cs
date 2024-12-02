@@ -31,7 +31,7 @@ public class Payment : IAggregateRoot
         get => _providerPaymentId;
         set
         {
-            UnableToChangePaymentProiderIdException.ThrowIfUnableToChangeStatus(Status);
+            UnableToChangePaymentProiderIdException.ThrowIfUnableToChangeStatus(Status, PaymentStatus.Creating);
             _providerPaymentId = value;
             Status = PaymentStatus.Pending;
         }
@@ -39,4 +39,10 @@ public class Payment : IAggregateRoot
     public required decimal Amount { get; init; }
     public Photo? Image { get; set; }
     public DateTime? CreatedAt { get; init; }
+
+    public void SetStatusPaid()
+    {
+        UnableToChangePaymentProiderIdException.ThrowIfUnableToChangeStatus(Status, PaymentStatus.Pending);
+        Status = PaymentStatus.Paid;
+    }
 }

@@ -37,6 +37,36 @@ public class PaymentMongoDbRepository : IPaymentMongoDbRepository
             response;
     }
 
+    public async Task<PaymentMongoModel?> GetByExternalIdAsync(int id, CancellationToken cancellationToken)
+    {
+
+        var filters = Builders<PaymentMongoModel>
+            .Filter
+            .Eq(x => x.ExternalId, id);
+
+        var response = await _collection
+            .Find(filters)
+            .FirstOrDefaultAsync(cancellationToken);
+
+        return
+            response;
+    }
+
+    public async Task<PaymentMongoModel?> GetByProviderPaymentIdAsync(string id, CancellationToken cancellationToken)
+    {
+
+        var filters = Builders<PaymentMongoModel>
+            .Filter
+            .Eq(x => x.ProviderPaymentId, id);
+
+        var response = await _collection
+            .Find(filters)
+            .FirstOrDefaultAsync(cancellationToken);
+
+        return
+            response;
+    }
+
     public async Task<PaymentMongoModel> ReplaceOneAsync(PaymentMongoModel orderMongoModel, CancellationToken cancellationToken)
     {
         var filters = Builders<PaymentMongoModel>
