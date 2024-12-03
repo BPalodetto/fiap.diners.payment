@@ -53,7 +53,7 @@ public class RabbitMqWorker : BackgroundService
 
             };
 
-            await channel.BasicConsumeAsync("OrderPaymentConfirmed", autoAck: true, consumer: consumer);
+            await channel.BasicConsumeAsync("SendToPayment", autoAck: true, consumer: consumer);
         }
     }
 

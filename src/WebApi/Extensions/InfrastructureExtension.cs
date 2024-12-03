@@ -25,8 +25,10 @@ public static class InfrastructureExtension
 
     private static IServiceCollection AddContext(this IServiceCollection services)
     {
+        var connectionString = Environment.GetEnvironmentVariable("MongoConnectionString");
+        var dbName = Environment.GetEnvironmentVariable("dinersPayment");
         return
-            services.AddSingleton<IMongoContext>(new MongoContext("mongodb://sa:1234@localhost:27017/", "dinersPayment"));
+            services.AddSingleton<IMongoContext>(new MongoContext(connectionString, dbName));
     }
 
     private static IServiceCollection AddRepository(this IServiceCollection services)
@@ -50,15 +52,21 @@ public static class InfrastructureExtension
 
     private static IServiceCollection AddRabbitMqConnectionFactory(this IServiceCollection services)
     {
+
+        var hostName = Environment.GetEnvironmentVariable("RabbitMqHostName");
+        var port = int.Parse(Environment.GetEnvironmentVariable("RabbitMqPort"));
+        var user = Environment.GetEnvironmentVariable("RabbitMqUserName");
+        var password = Environment.GetEnvironmentVariable("RabbitMqPassword");
+
         return
             services
                 .AddSingleton<IConnectionFactory>(
                     new ConnectionFactory()
                     {
-                        HostName = "localhost",
-                        Port = 5672,
-                        UserName = "guest",
-                        Password = "guest"
+                        HostName = hostName,
+                        Port = port,
+                        UserName = user,
+                        Password = password
                     }
                 );
     }

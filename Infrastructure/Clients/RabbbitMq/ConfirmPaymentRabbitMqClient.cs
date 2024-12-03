@@ -7,7 +7,7 @@ namespace Infrastructure.Clients.RabbbitMq;
 
 public class ConfirmPaymentRabbitMqClient : RabbitMQPublisher<ConfirmOrderPaymentDto>, IConfirmPaymentClient
 {
-    public const string QueueName = "SendToProduction";
+    public const string QueueName = "OrderPaymentConfirmed";
     public ConfirmPaymentRabbitMqClient(IConnectionFactory factory) : base(factory, QueueName)
     {
 
